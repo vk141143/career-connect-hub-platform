@@ -1,14 +1,22 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Building, Search, MapPin, Calendar, Users, Bell, User, Settings } from "lucide-react";
+import { Building, Search, MapPin, Calendar, Users, Bell, User, Settings, LogOut } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const JobSeekerDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+  };
 
   const appliedJobs = [
     {
@@ -66,25 +74,25 @@ const JobSeekerDashboard = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center hover:scale-105 transition-transform duration-200">
               <Building className="h-8 w-8 text-blue-600" />
               <span className="ml-2 text-2xl font-bold text-gray-900">JobPortal</span>
             </Link>
             <nav className="hidden md:flex space-x-8">
               <Link to="/job-seeker-dashboard" className="text-blue-600 font-medium">Dashboard</Link>
               <Link to="/browse-jobs" className="text-gray-700 hover:text-blue-600 transition-colors">Browse Jobs</Link>
-              <Link to="/applications" className="text-gray-700 hover:text-blue-600 transition-colors">My Applications</Link>
               <Link to="/profile" className="text-gray-700 hover:text-blue-600 transition-colors">Profile</Link>
             </nav>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="hover:bg-blue-50">
                 <Bell className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="hover:bg-blue-50">
                 <User className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm">
-                <Settings className="h-5 w-5" />
+              <Button variant="outline" size="sm" onClick={handleLogout} className="hover:bg-red-50 hover:text-red-600">
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
               </Button>
             </div>
           </div>
@@ -93,14 +101,14 @@ const JobSeekerDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div className="mb-8">
+        <div className="mb-8 animate-fade-in">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, John!</h1>
           <p className="text-gray-600">Here's what's happening with your job search today.</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="hover-scale">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="bg-blue-100 rounded-full p-3">
@@ -113,7 +121,7 @@ const JobSeekerDashboard = () => {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="hover-scale">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="bg-green-100 rounded-full p-3">
@@ -126,7 +134,7 @@ const JobSeekerDashboard = () => {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="hover-scale">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="bg-purple-100 rounded-full p-3">
@@ -139,7 +147,7 @@ const JobSeekerDashboard = () => {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="hover-scale">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="bg-orange-100 rounded-full p-3">
@@ -156,7 +164,7 @@ const JobSeekerDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Applied Jobs */}
-          <Card>
+          <Card className="hover-scale">
             <CardHeader>
               <CardTitle>Recent Applications</CardTitle>
               <CardDescription>Track your recent job applications</CardDescription>
@@ -164,7 +172,7 @@ const JobSeekerDashboard = () => {
             <CardContent>
               <div className="space-y-4">
                 {appliedJobs.map((job) => (
-                  <div key={job.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div key={job.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                     <div>
                       <h3 className="font-medium text-gray-900">{job.title}</h3>
                       <p className="text-sm text-gray-600">{job.company}</p>
@@ -176,14 +184,14 @@ const JobSeekerDashboard = () => {
                   </div>
                 ))}
               </div>
-              <Button variant="outline" className="w-full mt-4">
+              <Button variant="outline" className="w-full mt-4 hover:bg-blue-50">
                 View All Applications
               </Button>
             </CardContent>
           </Card>
 
           {/* Recommended Jobs */}
-          <Card>
+          <Card className="hover-scale">
             <CardHeader>
               <CardTitle>Recommended for You</CardTitle>
               <CardDescription>Jobs that match your profile</CardDescription>
@@ -191,7 +199,7 @@ const JobSeekerDashboard = () => {
             <CardContent>
               <div className="space-y-4">
                 {recommendedJobs.map((job) => (
-                  <div key={job.id} className="p-4 border rounded-lg">
+                  <div key={job.id} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <h3 className="font-medium text-gray-900">{job.title}</h3>
@@ -207,27 +215,29 @@ const JobSeekerDashboard = () => {
                     </div>
                     <div className="flex flex-wrap gap-1 mb-3">
                       {job.skills.map((skill) => (
-                        <Badge key={skill} variant="outline" className="text-xs">
+                        <Badge key={skill} variant="outline" className="text-xs hover:bg-blue-50 transition-colors">
                           {skill}
                         </Badge>
                       ))}
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-green-600">{job.salary}</span>
-                      <Button size="sm">Apply Now</Button>
+                      <Button size="sm" className="hover:bg-blue-700 transition-colors">Apply Now</Button>
                     </div>
                   </div>
                 ))}
               </div>
-              <Button variant="outline" className="w-full mt-4">
-                View More Jobs
-              </Button>
+              <Link to="/browse-jobs">
+                <Button variant="outline" className="w-full mt-4 hover:bg-blue-50">
+                  View More Jobs
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
 
         {/* Quick Job Search */}
-        <Card className="mt-8">
+        <Card className="mt-8 hover-scale">
           <CardHeader>
             <CardTitle>Quick Job Search</CardTitle>
             <CardDescription>Find your next opportunity</CardDescription>
@@ -242,10 +252,12 @@ const JobSeekerDashboard = () => {
                   className="h-11"
                 />
               </div>
-              <Button className="px-8">
-                <Search className="h-4 w-4 mr-2" />
-                Search
-              </Button>
+              <Link to="/browse-jobs">
+                <Button className="px-8 hover:bg-blue-700 transition-colors">
+                  <Search className="h-4 w-4 mr-2" />
+                  Search
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
