@@ -1,12 +1,14 @@
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building, Plus, Users, Eye, Calendar, Bell, User, Settings } from "lucide-react";
+import { Building, Plus, Users, Eye, Calendar, Bell, User, Settings, LogOut } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const CompanyDashboard = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [verificationStatus, setVerificationStatus] = useState("pending"); // pending, approved, rejected
 
   const jobPostings = [
@@ -100,6 +102,14 @@ const CompanyDashboard = () => {
 
   const verificationDisplay = getVerificationStatusDisplay();
 
+  const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -125,6 +135,10 @@ const CompanyDashboard = () => {
               </Button>
               <Button variant="ghost" size="sm">
                 <Settings className="h-5 w-5" />
+              </Button>
+              <Button variant="outline" onClick={handleLogout} className="hover:bg-red-50 hover:text-red-600">
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
               </Button>
             </div>
           </div>
@@ -253,9 +267,11 @@ const CompanyDashboard = () => {
                   </div>
                 ))}
               </div>
-              <Button variant="outline" className="w-full mt-4">
-                View All Jobs
-              </Button>
+              <Link to="/manage-jobs">
+                <Button variant="outline" className="w-full mt-4">
+                  View All Jobs
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -316,10 +332,10 @@ const CompanyDashboard = () => {
                     Review Applications
                   </Button>
                 </Link>
-                <Link to="/company-profile">
+                <Link to="/manage-jobs">
                   <Button variant="outline" className="w-full h-20 flex flex-col">
                     <Building className="h-6 w-6 mb-2" />
-                    Update Company Profile
+                    Manage Jobs
                   </Button>
                 </Link>
               </div>

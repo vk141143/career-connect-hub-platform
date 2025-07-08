@@ -54,9 +54,15 @@ const Login = () => {
     }, 1000);
   };
 
+  const handleContactUs = () => {
+    const subject = encodeURIComponent("JobPortal Support Request");
+    const body = encodeURIComponent("Hello JobPortal Support Team,\n\nI need assistance with:\n\n[Please describe your issue here]\n\nThank you!");
+    window.location.href = `mailto:support@jobportal.com?subject=${subject}&body=${body}`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-xl border-0">
+      <Card className="w-full max-w-md shadow-xl border-0 animate-fade-in">
         <CardHeader className="text-center pb-8">
           <div className="flex justify-center mb-4">
             <div className="bg-blue-100 rounded-full p-3">
@@ -137,13 +143,13 @@ const Login = () => {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-blue-600 hover:bg-blue-700"
+              className="w-full h-11 bg-blue-600 hover:bg-blue-700 btn-hover-effect"
               disabled={isLoading}
             >
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
 
-            <div className="text-center space-y-2">
+            <div className="text-center space-y-3">
               <Link
                 to="/forgot-password"
                 className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
@@ -158,6 +164,18 @@ const Login = () => {
                 >
                   Sign up here
                 </Link>
+              </div>
+              <div className="pt-2 border-t">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleContactUs}
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Contact Us for Support
+                </Button>
               </div>
             </div>
           </form>

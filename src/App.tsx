@@ -15,6 +15,7 @@ import PostJob from "./pages/PostJob";
 import Applications from "./pages/Applications";
 import BrowseJobs from "./pages/BrowseJobs";
 import Profile from "./pages/Profile";
+import ManageJobs from "./pages/ManageJobs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/job/:id" element={<JobDetails />} />
           <Route path="/post-job" element={<PostJob />} />
+          <Route path="/manage-jobs" element={<ManageJobs />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/browse-jobs" element={<BrowseJobs />} />
           <Route path="/profile" element={<Profile />} />

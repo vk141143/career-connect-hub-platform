@@ -1,15 +1,19 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, Users, Eye, Calendar, CheckCircle, XCircle, AlertCircle, Search, Settings, Bell, User } from "lucide-react";
+import { Building, Users, Eye, Calendar, CheckCircle, XCircle, AlertCircle, Search, Settings, Bell, User, Grid2X2, List, Filter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const AdminDashboard = () => {
   const { toast } = useToast();
+  const [viewMode, setViewMode] = useState("list"); // list or grid
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const [pendingCompanies, setPendingCompanies] = useState([
     {
@@ -112,6 +116,20 @@ const AdminDashboard = () => {
       variant: action === "approve" ? "default" : "destructive"
     });
   };
+
+  const filteredUsers = allUsers.filter(user => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterStatus === "all" || user.status.toLowerCase() === filterStatus.toLowerCase();
+    return matchesSearch && matchesFilter;
+  });
+
+  const filteredJobs = jobPostings.filter(job => {
+    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.company.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterStatus === "all" || job.status.toLowerCase() === filterStatus.toLowerCase();
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -278,24 +296,60 @@ const AdminDashboard = () => {
           <TabsContent value="users">
             <Card>
               <CardHeader>
-                <CardTitle>User Management</CardTitle>
-                <CardDescription>
-                  Monitor and manage platform users
-                </CardDescription>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>User Management</CardTitle>
+                    <CardDescription>Monitor and manage platform users</CardDescription>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
+                    >
+                      {viewMode === "list" ? <Grid2X2 className="h-4 w-4" /> : <List className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+                <div className="flex space-x-4 pt-4">
+                  <div className="flex-1">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        placeholder="Search users..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                    <SelectTrigger className="w-[180px]">
+                      <Filter className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="verified">Verified</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {allUsers.map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-4"}>
+                  {filteredUsers.map((user) => (
+                    <div key={user.id} className={viewMode === "grid" ? "p-4 border rounded-lg bg-white" : "flex items-center justify-between p-4 border rounded-lg"}>
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900">{user.name}</h3>
-                        <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
+                        <div className={`${viewMode === "grid" ? "space-y-1" : "flex items-center space-x-4"} text-sm text-gray-600 mt-1`}>
                           <span>{user.email}</span>
                           <Badge variant="outline">{user.type}</Badge>
                           <span>Joined {user.joinDate}</span>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-4">
+                      <div className={`${viewMode === "grid" ? "mt-3 flex justify-between" : "flex items-center space-x-4"}`}>
                         <Badge className={user.status === "Active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
                           {user.status}
                         </Badge>
@@ -350,18 +404,53 @@ const AdminDashboard = () => {
           <TabsContent value="jobs">
             <Card>
               <CardHeader>
-                <CardTitle>Job Postings Management</CardTitle>
-                <CardDescription>
-                  Monitor and manage job postings across the platform
-                </CardDescription>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>Job Postings Management</CardTitle>
+                    <CardDescription>Monitor and manage job postings across the platform</CardDescription>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
+                    >
+                      {viewMode === "list" ? <Grid2X2 className="h-4 w-4" /> : <List className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+                <div className="flex space-x-4 pt-4">
+                  <div className="flex-1">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        placeholder="Search jobs..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                    <SelectTrigger className="w-[180px]">
+                      <Filter className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="closed">Closed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {jobPostings.map((job) => (
-                    <div key={job.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 gap-4" : "space-y-4"}>
+                  {filteredJobs.map((job) => (
+                    <div key={job.id} className={viewMode === "grid" ? "p-4 border rounded-lg bg-white" : "flex items-center justify-between p-4 border rounded-lg"}>
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900">{job.title}</h3>
-                        <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
+                        <div className={`${viewMode === "grid" ? "space-y-1" : "flex items-center space-x-4"} text-sm text-gray-600 mt-1`}>
                           <span>{job.company}</span>
                           <span>{job.location}</span>
                           <span>{job.applications} applications</span>
@@ -369,7 +458,7 @@ const AdminDashboard = () => {
                           <span>Posted {job.postedDate}</span>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-4">
+                      <div className={`${viewMode === "grid" ? "mt-3 flex justify-between" : "flex items-center space-x-4"}`}>
                         <Badge className={job.status === "Active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
                           {job.status}
                         </Badge>
