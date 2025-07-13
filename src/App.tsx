@@ -10,12 +10,15 @@ import Register from "./pages/Register";
 import JobSeekerDashboard from "./pages/JobSeekerDashboard";
 import CompanyDashboard from "./pages/CompanyDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/AdminLogin";
 import JobDetails from "./pages/JobDetails";
 import PostJob from "./pages/PostJob";
 import Applications from "./pages/Applications";
 import BrowseJobs from "./pages/BrowseJobs";
 import Profile from "./pages/Profile";
 import ManageJobs from "./pages/ManageJobs";
+import Subscription from "./pages/Subscription";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,12 +36,15 @@ const App = () => (
           <Route path="/job-seeker-dashboard" element={<JobSeekerDashboard />} />
           <Route path="/company-dashboard" element={<CompanyDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/job/:id" element={<JobDetails />} />
           <Route path="/post-job" element={<PostJob />} />
           <Route path="/manage-jobs" element={<ManageJobs />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/browse-jobs" element={<BrowseJobs />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/subscription" element={<Subscription />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

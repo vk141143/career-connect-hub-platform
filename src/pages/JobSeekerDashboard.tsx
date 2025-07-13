@@ -81,6 +81,7 @@ const JobSeekerDashboard = () => {
             <nav className="hidden md:flex space-x-8">
               <Link to="/job-seeker-dashboard" className="text-blue-600 font-medium">Dashboard</Link>
               <Link to="/browse-jobs" className="text-gray-700 hover:text-blue-600 transition-colors">Browse Jobs</Link>
+              <Link to="/subscription" className="text-gray-700 hover:text-blue-600 transition-colors">Subscription</Link>
               <Link to="/profile" className="text-gray-700 hover:text-blue-600 transition-colors">Profile</Link>
             </nav>
             <div className="flex items-center space-x-4">

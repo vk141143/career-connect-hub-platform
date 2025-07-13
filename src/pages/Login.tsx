@@ -37,9 +37,6 @@ const Login = () => {
           case "company":
             navigate("/company-dashboard");
             break;
-          case "admin":
-            navigate("/admin-dashboard");
-            break;
           default:
             navigate("/");
         }
@@ -98,13 +95,6 @@ const Login = () => {
                     <Label htmlFor="company" className="flex items-center cursor-pointer">
                       <Building className="h-4 w-4 mr-2" />
                       Company/HR
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="admin" id="admin" />
-                    <Label htmlFor="admin" className="flex items-center cursor-pointer">
-                      <Mail className="h-4 w-4 mr-2" />
-                      Admin
                     </Label>
                   </div>
                 </RadioGroup>
