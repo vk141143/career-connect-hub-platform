@@ -46,6 +46,7 @@ const AdminDashboard = () => {
       type: "Job Seeker",
       joinDate: "2024-01-10",
       status: "Active",
+      subscription: "Legend",
       applications: 8
     },
     {
@@ -55,15 +56,37 @@ const AdminDashboard = () => {
       type: "Job Seeker",
       joinDate: "2024-01-12",
       status: "Active",
+      subscription: "Basic",
       applications: 12
     },
     {
       id: 3,
+      name: "Sarah Johnson",
+      email: "sarah@email.com",
+      type: "Job Seeker",
+      joinDate: "2024-01-05",
+      status: "Active",
+      subscription: "Ultra Legend",
+      applications: 25
+    },
+    {
+      id: 4,
+      name: "Mike Davis",
+      email: "mike@email.com",
+      type: "Job Seeker",
+      joinDate: "2024-01-15",
+      status: "Active",
+      subscription: "Basic",
+      applications: 5
+    },
+    {
+      id: 5,
       name: "TechCorp Solutions",
       email: "hr@techcorp.com",
       type: "Company",
       joinDate: "2024-01-08",
       status: "Verified",
+      subscription: "N/A",
       jobPosts: 5
     }
   ];
@@ -349,10 +372,20 @@ const AdminDashboard = () => {
                           <span>Joined {user.joinDate}</span>
                         </div>
                       </div>
-                      <div className={`${viewMode === "grid" ? "mt-3 flex justify-between" : "flex items-center space-x-4"}`}>
-                        <Badge className={user.status === "Active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                      <div className={`${viewMode === "grid" ? "mt-3 flex flex-wrap gap-2" : "flex items-center space-x-2"}`}>
+                        <Badge className={user.status === "Active" || user.status === "Verified" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
                           {user.status}
                         </Badge>
+                        {user.type === "Job Seeker" && (
+                          <Badge className={
+                            user.subscription === "Ultra Legend" ? "bg-amber-100 text-amber-800" :
+                            user.subscription === "Legend" ? "bg-purple-100 text-purple-800" :
+                            user.subscription === "Basic" ? "bg-blue-100 text-blue-800" :
+                            "bg-gray-100 text-gray-800"
+                          }>
+                            {user.subscription}
+                          </Badge>
+                        )}
                         <Button variant="outline" size="sm">
                           View Details
                         </Button>
