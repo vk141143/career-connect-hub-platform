@@ -199,6 +199,10 @@ const Subscription = () => {
                             : 'bg-blue-600 hover:bg-blue-700'
                       }`}
                       disabled={isCurrentPlan}
+                      onClick={!isCurrentPlan ? () => {
+                        // Navigate to checkout with selected plan
+                        window.location.href = `/checkout?plan=${plan.id}&price=${plan.price}&name=${plan.name}`;
+                      } : undefined}
                     >
                       {isCurrentPlan ? 'Current Plan' : `Choose ${plan.name}`}
                     </Button>
