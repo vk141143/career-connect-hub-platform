@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, Users, Eye, Calendar, CheckCircle, XCircle, AlertCircle, Search, Settings, Bell, User, Grid2X2, List, Filter } from "lucide-react";
+import { Building, Users, Eye, Calendar, CheckCircle, XCircle, AlertCircle, Search, Settings, Bell, User, Grid2X2, List, Filter, MessageCircle, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const AdminDashboard = () => {
@@ -154,6 +154,27 @@ const AdminDashboard = () => {
     return matchesSearch && matchesFilter;
   });
 
+  // Get contact submissions from localStorage
+  const getContactSubmissions = () => {
+    const submissions = localStorage.getItem("contactSubmissions");
+    return submissions ? JSON.parse(submissions) : [];
+  };
+
+  const contactSubmissions = getContactSubmissions();
+  
+  const handleContactStatusUpdate = (submissionId: string, newStatus: string) => {
+    const submissions = getContactSubmissions();
+    const updatedSubmissions = submissions.map((sub: any) => 
+      sub.id === submissionId ? { ...sub, status: newStatus } : sub
+    );
+    localStorage.setItem("contactSubmissions", JSON.stringify(updatedSubmissions));
+    
+    toast({
+      title: "Status Updated",
+      description: `Contact submission marked as ${newStatus}.`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -250,11 +271,12 @@ const AdminDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="pending" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="pending">Pending Verifications</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="companies">Companies</TabsTrigger>
             <TabsTrigger value="jobs">Job Postings</TabsTrigger>
+            <TabsTrigger value="contact">Contact Queries</TabsTrigger>
           </TabsList>
 
           {/* Pending Company Verifications */}
@@ -501,6 +523,100 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Contact Queries Management */}
+          <TabsContent value="contact">
+            <Card>
+              <CardHeader>
+                <CardTitle>Contact Queries & Complaints</CardTitle>
+                <CardDescription>
+                  Manage customer inquiries, support requests, and complaints
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {contactSubmissions.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">
+                      <MessageCircle className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                      <p>No contact submissions yet</p>
+                    </div>
+                  ) : (
+                    contactSubmissions.map((submission: any) => (
+                      <div key={submission.id} className="p-6 border rounded-lg bg-white">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-lg font-semibold text-gray-900">{submission.subject}</h3>
+                              <Badge className={
+                                submission.type === "complaint" ? "bg-red-100 text-red-800" :
+                                submission.type === "technical" ? "bg-orange-100 text-orange-800" :
+                                submission.type === "billing" ? "bg-purple-100 text-purple-800" :
+                                "bg-blue-100 text-blue-800"
+                              }>
+                                {submission.type.replace("-", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                              </Badge>
+                            </div>
+                            <div className="space-y-2 text-sm text-gray-600">
+                              <p><strong>Name:</strong> {submission.name}</p>
+                              <p><strong>Email:</strong> {submission.email}</p>
+                              {submission.phone && <p><strong>Phone:</strong> {submission.phone}</p>}
+                              <p><strong>Submitted:</strong> {new Date(submission.timestamp).toLocaleDateString()}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="mb-4">
+                              <p className="text-sm text-gray-700">
+                                <strong>Message:</strong>
+                              </p>
+                              <p className="text-sm text-gray-600 mt-1 p-3 bg-gray-50 rounded border">
+                                {submission.message}
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <Badge className={
+                                submission.status === "resolved" ? "bg-green-100 text-green-800" :
+                                submission.status === "in-progress" ? "bg-yellow-100 text-yellow-800" :
+                                "bg-gray-100 text-gray-800"
+                              }>
+                                {submission.status.replace("-", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                              </Badge>
+                              <div className="flex space-x-2">
+                                {submission.status === "pending" && (
+                                  <Button 
+                                    size="sm"
+                                    onClick={() => handleContactStatusUpdate(submission.id, "in-progress")}
+                                  >
+                                    Start Review
+                                  </Button>
+                                )}
+                                {submission.status === "in-progress" && (
+                                  <Button 
+                                    size="sm"
+                                    onClick={() => handleContactStatusUpdate(submission.id, "resolved")}
+                                    className="bg-green-600 hover:bg-green-700"
+                                  >
+                                    Mark Resolved
+                                  </Button>
+                                )}
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => window.location.href = `mailto:${submission.email}?subject=Re: ${submission.subject}`}
+                                >
+                                  <Mail className="h-4 w-4 mr-1" />
+                                  Reply
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>

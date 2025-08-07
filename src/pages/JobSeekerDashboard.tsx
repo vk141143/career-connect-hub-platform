@@ -83,6 +83,7 @@ const JobSeekerDashboard = () => {
               <Link to="/browse-jobs" className="text-gray-700 hover:text-blue-600 transition-colors">Browse Jobs</Link>
               <Link to="/subscription" className="text-gray-700 hover:text-blue-600 transition-colors">Subscription</Link>
               <Link to="/profile" className="text-gray-700 hover:text-blue-600 transition-colors">Profile</Link>
+              <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
             </nav>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm" className="hover:bg-blue-50">

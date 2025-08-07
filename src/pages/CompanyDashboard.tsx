@@ -125,6 +125,7 @@ const CompanyDashboard = () => {
               <Link to="/post-job" className="text-gray-700 hover:text-blue-600 transition-colors">Post Job</Link>
               <Link to="/manage-jobs" className="text-gray-700 hover:text-blue-600 transition-colors">Manage Jobs</Link>
               <Link to="/applications" className="text-gray-700 hover:text-blue-600 transition-colors">Applications</Link>
+              <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
             </nav>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm">

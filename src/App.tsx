@@ -20,6 +20,7 @@ import ManageJobs from "./pages/ManageJobs";
 import Subscription from "./pages/Subscription";
 import Checkout from "./pages/Checkout";
 import SalesDashboard from "./pages/SalesDashboard";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/subscription" element={<Subscription />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/sales-dashboard" element={<SalesDashboard />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
