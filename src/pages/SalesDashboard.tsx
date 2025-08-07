@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,14 @@ const SalesDashboard = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [subscriptionFilter, setSubscriptionFilter] = useState("all");
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const salesAuth = localStorage.getItem("salesAuth");
+    if (!salesAuth) {
+      navigate("/sales-login");
+    }
+  }, [navigate]);
 
   const prospects = [
     {
@@ -113,10 +121,16 @@ const SalesDashboard = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("salesAuth");
     toast({
       title: "Logged Out",
       description: "You have been successfully logged out.",
     });
+    navigate("/sales-login");
+  };
+
+  const handleAdminAccess = () => {
+    navigate("/admin-login");
   };
 
   const getSubscriptionIcon = (subscription: string) => {
@@ -158,7 +172,9 @@ const SalesDashboard = () => {
             </Link>
             <nav className="hidden md:flex space-x-8">
               <Link to="/sales-dashboard" className="text-blue-600 font-medium">Sales Dashboard</Link>
-              <Link to="/admin-dashboard" className="text-gray-700 hover:text-blue-600 transition-colors">Admin Dashboard</Link>
+              <Button variant="ghost" onClick={handleAdminAccess} className="text-gray-700 hover:text-blue-600 transition-colors">
+                Admin Dashboard
+              </Button>
             </nav>
             <div className="flex items-center space-x-4">
               <Button variant="outline" size="sm" onClick={handleLogout} className="hover:bg-red-50 hover:text-red-600">
