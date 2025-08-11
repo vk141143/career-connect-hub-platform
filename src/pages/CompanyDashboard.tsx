@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building, Plus, Users, Eye, Calendar, Bell, User, Settings, LogOut } from "lucide-react";
+import { Building, Plus, Users, Eye, Calendar, Bell, User, Settings, LogOut, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Chatbot from "@/components/ui/chatbot";
 
 const CompanyDashboard = () => {
   const navigate = useNavigate();
@@ -126,6 +127,10 @@ const CompanyDashboard = () => {
               <Link to="/manage-jobs" className="text-gray-700 hover:text-blue-600 transition-colors">Manage Jobs</Link>
               <Link to="/applications" className="text-gray-700 hover:text-blue-600 transition-colors">Applications</Link>
               <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
+              <Link to="/blog-management" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center">
+                <Edit className="h-4 w-4 mr-1" />
+                Blogs
+              </Link>
             </nav>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm">
@@ -344,6 +349,8 @@ const CompanyDashboard = () => {
           </Card>
         )}
       </div>
+      
+      <Chatbot type="company" />
     </div>
   );
 };

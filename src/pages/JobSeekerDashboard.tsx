@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Building, Search, MapPin, Calendar, Users, Bell, User, Settings, LogOut } from "lucide-react";
+import { Building, Search, MapPin, Calendar, Users, Bell, User, Settings, LogOut, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Chatbot from "@/components/ui/chatbot";
 
 const JobSeekerDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -84,6 +85,10 @@ const JobSeekerDashboard = () => {
               <Link to="/subscription" className="text-gray-700 hover:text-blue-600 transition-colors">Subscription</Link>
               <Link to="/profile" className="text-gray-700 hover:text-blue-600 transition-colors">Profile</Link>
               <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
+              <Link to="/training" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center">
+                <BookOpen className="h-4 w-4 mr-1" />
+                Training
+              </Link>
             </nav>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm" className="hover:bg-blue-50">
@@ -264,6 +269,8 @@ const JobSeekerDashboard = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <Chatbot type="jobseeker" />
     </div>
   );
 };

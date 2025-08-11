@@ -23,6 +23,9 @@ import SalesDashboard from "./pages/SalesDashboard";
 import SalesLogin from "./pages/SalesLogin";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Blogs from "./pages/Blogs";
+import BlogManagement from "./pages/BlogManagement";
+import Training from "./pages/Training";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +54,9 @@ const App = () => (
           <Route path="/sales-dashboard" element={<SalesDashboard />} />
           <Route path="/sales-login" element={<SalesLogin />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blog-management" element={<BlogManagement />} />
+          <Route path="/training" element={<Training />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
